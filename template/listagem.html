@@ -1,0 +1,143 @@
+{#<!DOCTYPE html>#}
+{#<html lang="pt-br">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <meta http-equiv="X-UA-Compatible" content="IE=edge">#}
+{#    <meta name="viewport" content="width=device-width, initial-scale=1.0">#}
+{#    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">#}
+{#    <title>Listagem</title>#}
+{#    <style>#}
+{#        body {#}
+{#            text-align: center;#}
+{#        }#}
+{#    </style>#}
+{#</head>#}
+{#<body>#}
+{#    {% include 'partials/_nav.html' %}#}
+{#   <br>#}
+{#   <table style="width: 100%;" >#}
+{#       <thead>#}
+{#            <tr>#}
+{#                <th>Nome</th>#}
+{#                <th>Valor</th>#}
+{#                <th>Categoria</th>#}
+{#                <th>Disponível</th>#}
+{#                <th>Detalhes</th>#}
+{#                <th></th>#}
+{#            </tr>#}
+{#       </thead>#}
+{#       <tbody> #}
+{#        {% for produto in produtos %}#}
+{#            <tr>#}
+{#                <td>{{ produto.nome }}</td>#}
+{#                <td>R${{ produto.valor }}</td>#}
+{#                <td>{{ produto.categoria }}</td>#}
+{#                <td>#}
+{#                    {% if not produto.vendido %}#}
+{#                        SIM#}
+{#                    {% else %}#}
+{#                        NÃO#}
+{#                    {% endif %}#}
+{#                </td>#}
+{#                <td><a href="{% url 'detalhes' produto.id %}">DETALHES</a></td>#}
+{#                <td>#}
+{#                    {% if not produto.produto_carro %}#}
+{#                        {% if produto.vendido == True %}#}
+{#                            PRODUTO JÁ FOI VENDIDO#}
+{#                        {% else %}#}
+{#                        <a href="{% url 'carrinho' %}?produto_id={{ produto.id }}"><button>Adicionar ao carrinho</button></a></td>#}
+{#                        {% endif %}#}
+{#                        #}
+{#                    {% else %}#}
+{#                        Produto já está no carro#}
+{#                    {% endif %}#}
+{#                   #}
+{#            </tr>#}
+{#  #}
+{#        {% endfor %}#}
+{#       </tbody>#}
+{#   </table>#}
+{#        <br>#}
+{#    <a href="{% url 'carrinho' %}"><button class="btn btn-primary">Carrinho </button></a>#}
+{#    <a href="{% url 'cadastro_produto' %}"><button class="btn btn-primary">Cadastro Produto </button></a>#}
+{#    <a href="{% url 'cadastro_categoria' %}"><button class="btn btn-primary">Cadastro Categoria </button></a>#}
+{#</body>#}
+{#</html>#}
+
+
+
+
+
+
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title_page %}Lista dos produtos{% endblock title_page %}
+
+{% block content %}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">NOME</th>
+                <th scope="col">VALOR</th>
+                <th scope="col">CATEGORIA</th>
+                <th scope="col" class="text-center">DISPONIBILIDADE</th>
+                <th scope="col" class="text-center">DETALHES</th>
+                <th scope="col" class="text-center">ADD CARRINHO</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for produto in produtos %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ produto.nome }}</td>
+                <td>R$ {{ produto.valor }}</td>
+                <td>{{ produto.categoria }}</td>
+                <td class="text-center">
+                    {% if produto.vendido %}
+                        <span class="badge bg-danger">NÃO</span>
+                    {% else %}
+                        <span class="badge bg-warning">SIM</span>
+                    {% endif %}
+                </td>
+                <td class="text-center">
+                    <a href="{% url 'detalhes' produto.id %}">DETALHES</a>
+                </td>
+                <td class="text-center">
+                    {% if produto.produto_carro %}
+                        {% if produto.vendido == True %}
+                            <button type="button" class="btn btn-secondary btn-sm">
+                                PRODUTO JÁ FOI VENDIDO
+                            </button>
+                        {% else %}
+                            <a href="{% url 'carrinho' produto.id %}">
+                                <button type="button" class="btn btn-secondary btn-sm">
+                                    VER NO CARRINHO
+                                </button>
+                            </a>
+                        {% endif %}
+
+                    {% else %}
+                        <a href="{% url 'carrinho' produto.id %}?add=True">
+                            <button type="button" class="btn btn-primary btn-sm">
+                                ADICIONAR AO CARRINHO
+                            </button>
+                        </a>
+                    {% endif %}
+                </tr>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">
+                    <div class="display-6 mt-2 mb-2 text-muted text-center">
+                        Nenhum produto cadastrado.
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock content %}
