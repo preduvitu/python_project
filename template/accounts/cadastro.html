@@ -73,10 +73,15 @@
                                     {{ form.password2 }}
                                     <div class="fs-6 fw-lighter text-danger">{{ form.password2.errors }}</div>
                                 </div>
-
+                                <a href="{% url 'login' %}">
+                                    <button type="button" class="btn btn-link" style="font-size: 12px;">
+                                        Já possui cadastro? Login
+                                    </button>
+                                </a>
                                 <div class="d-grid">
                                     <button type="submit" class="btn btn-primary">Login</button>
                                 </div>
+                                
                             </form>
                         </div>
                     </div>
