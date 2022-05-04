@@ -14,7 +14,7 @@ def login(request):
         user = auth.authenticate(request, username=usuario, password=senha)
         if user is not None:
             auth.login(request, user)
-            return redirect('listagem')
+            return redirect('dashboard')
         else:
             return redirect('login')
     else:
