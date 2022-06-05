@@ -15,6 +15,8 @@ def detalhes(request):
     options.add_argument('--headless')
     options.add_argument('window-size=400,800')
 
+    dados_catho = []
+
     navegador = webdriver.Chrome(options=options)
 
     response = navegador.get('https://www.catho.com.br/')
@@ -31,39 +33,19 @@ def detalhes(request):
 
     site = BeautifulSoup(page_content, 'html.parser')
 
-    catho = site.find_all('span', {'class': 'job-description'})
+    catho = site.find('ul', {'class': 'sc-gGBfsJ exVOlL gtm-class'})
 
-    dados = pd.DataFrame(catho, columns=['Descrição'])
+    for cath in catho:
 
-    dados = dados.to_html('template/catho.html', index=False)
+        link = cath.find('a', {'tabindex': '1'})
 
-    # DATA_DIR = "template"
-    # OUT_DIR = "template"
+        descricao = cath.find('span', {'class': 'job-description'})
 
-    # def get_name(filename, dirname=DATA_DIR):
-    #     return os.path.join(dirname, filename)
+        dados_catho.append([link['title'], link['href'],descricao])
 
-    # def remove_chars(text, undesireds):
-    #     for c in undesireds:
-    #         text  = text.replace(c, " ")
-    #     return text
+        dados = pd.DataFrame(dados_catho, columns={'Título', 'Link', 'Descrição'})
 
-    # def stopwordslist():
-    #     lines = []
-    #     with open(get_name("stopwords.txt"), "r") as stopfile:
-    #         lines = [ line.strip() for line in stopfile.readlines() ]
-    #     return lines
+    dados.to_html('template/catho.html', index=False)
+    dados.to_excel('catho.xlsx', index=False)
 
-    # TO_REMOVE = ['(', ')', '[', ']', '?', '!', ':', '...', ';', '"', ',',]
-
-    # if __name__ == "__main__":
-    #     with open(get_name(dados)) as cathofile:
-    #         content = cathofile.read()
-    #         content = remove_chars(content, TO_REMOVE)
-    #         parts = [ p.strip() for p in content.split() ]
-    #         stopwords = stopwordslist()
-    #         words = [ part for part in parts if part not in stopwords ]
-    #         with open(get_name("python.txt",OUT_DIR), "w") as textfile:
-    #                 textfile.write(" ".join(words))
-
-    return render(request, 'catho.html')
+    return render(request, 'detalhes.html')

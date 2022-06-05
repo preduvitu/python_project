@@ -1,14 +1,14 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes</title>
-</head>
-<body>
-    <p>
-        {{ dados }}
-    </p>    
-</body>
-</html>
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title_page %}Painel{% endblock title_page %}
+
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<iframe title="projeto" width="1200" height="847" src="https://app.powerbi.com/view?r=eyJrIjoiNDVjOTUxNTUtYzA0MS00MzA0LWFhYmYtYTBhZmRkZDllZjk1IiwidCI6ImQ0ZGIxN2ZmLTM2MzEtNDYxNS05OWFmLWEwNTE0ZTcxNDQzNiJ9&pageName=ReportSection" frameborder="0" allowFullScreen="true"></iframe>
+
+{% endblock content %}
+
+
